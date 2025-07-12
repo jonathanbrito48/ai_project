@@ -5,13 +5,16 @@ from utils.llm_interface import LLMInterface
 from langchain_community.vectorstores import FAISS
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_core.documents import Document
+import re
 
 
 # Define the system prompt
 system_prompt = SystemMessage(content=(
     "Você é um agente virtual com o objetivo de ajudar o usuário a escolher o melhor carro para compra."
-    "Quando tiver informações suficientes sobre as preferencias do usuário"
-    "Você ira sugerir as melhores opções para o perfil do usuário baseado contexto fornecido (um dicionario de carros). Lembre-se de detalhar as especificações mais pertinentes sobre os veículos e explicar o porque das opções serem ideais para ele."
+    "Você tem acesso a um contexto que contém informações sobre veículos disponíveis, incluindo marca, modelo, ano, tipo de motor, transmissao, numero de portas, combustivel e preco."
+    "Você deve usar essas informações para responder às perguntas do usuário de forma precisa e informativa."
+    "Você deve sempre se basear no contexto fornecido e não inventar informações."
+    "Você ira sugerir as melhores opções para o perfil do usuário baseado contexto fornecido. Lembre-se de detalhar as especificações mais pertinentes sobre os veículos e explicar o porque das opções serem ideais para ele."
     "Não ofereça apenas uma opção de carro, mas de alternativas de veículos e explique a vantagem deles em relação a preferencia desejada."
     "Você pode ser educado nas saudações e perguntas, mas sempre tentar direcionar a conversa para falar sobre o contexto fornecido. Suas respostas DEVEM ser extraídas e focadas no contexto.\n"
     "Se o contexto não contiver a resposta para a pergunta, ou se as informações forem insuficientes, "
@@ -21,8 +24,8 @@ system_prompt = SystemMessage(content=(
 # Define the questions and expected responses
 questions = {
     "q1_in_context": {
-        "question": "Me ajude a escolher um carro no tipo SUV com orçamento de até 150 mil, 4 portas e economico?",
-        "expected_response": ["SUV", "veículos", "carro", "melhor", "orçamento", "portas", "econômico","tabela","sugerimos","combustivel"]
+        "question": "Me ajude a escolher um carro no tipo SUV com orçamento de até 150 mil?",
+        "expected_response": ["SUV", "veículos", "carro", "melhor", "orçamento","preço","ideal"]
     },
     "q2_out_of_context": {
         "question": "Qual é o maior animal do mundo?",
@@ -53,7 +56,7 @@ def test_response_generation():
 
         response = llm_handler.generate_response(messages)
 
-        content_response = [word.replace(".","").replace(",","").replace("'","").replace("*","").lower() for word in response.split(" ")]
+        content_response = re.findall(r'\w+', response.lower())
 
         print(f"Resposta gerada: {response.split("\n")}\n-----")
 

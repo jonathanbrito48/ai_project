@@ -23,7 +23,7 @@ class veiculos(Base):
     transmissao = Column(String, nullable=False)
     numero_portas = Column(String, nullable=True)
     combustivel = Column(String,nullable=False)
-    preco_tabela_fipe = Column(String, nullable=False)
+    preco = Column(String, nullable=False)
 
     def __repr__(self):
         return f"<Carro(marca='{self.modelo}')>"

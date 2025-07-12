@@ -43,7 +43,7 @@ class integration_engine:
                     'transmissao': carro[7],
                     'numero_portas': carro[12],
                     'combustivel': carro[13],
-                    'preco_tabela_fipe': float(carro[-1]) * 5.42 # Conversão para Real
+                    'preco': float(carro[-1]) * 5.42 # Conversão para Real
                 }
             )
         
@@ -60,7 +60,7 @@ class integration_engine:
                     transmissao=carro['transmissao'],
                     numero_portas=carro['numero_portas'],
                     combustivel=carro['combustivel'],
-                    preco_tabela_fipe=carro['preco_tabela_fipe']
+                    preco=carro['preco']
                 )
                 modelos_adicionados.add(carro['modelo'])
                 self.session.add(novo_carro)
