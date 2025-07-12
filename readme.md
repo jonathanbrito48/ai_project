@@ -45,7 +45,7 @@ Para rodar os testes automatizados, utilize o seguinte comando:
 docker-compose run --rm app pytest
 ```
 
-Isso executará os testes definidos em [`test_mcp.py`](test_mcp.py) no ambiente Docker, garantindo que todas as dependências estejam corretas.
+Isso executará os testes definidos em [`test_mcp.py`](test_mcp.py) no ambiente Docker, onde o teste avalia a aderência das respostas do MCP.
 
 ## Como iniciar a interação com o MCP
 
